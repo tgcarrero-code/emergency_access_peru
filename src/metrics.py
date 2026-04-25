@@ -15,7 +15,6 @@ def compute_scores(
 ) -> gpd.GeoDataFrame:
     df = district_summary.copy()
 
-    # ── Component scores ──────────────────────────────────────────────────────
     df["fds"] = normalize_col(df["n_facilities"])
 
     if "emergencias_total" in df.columns:
