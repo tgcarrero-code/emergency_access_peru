@@ -5,10 +5,6 @@ from src.utils import DATA_PROCESSED, CRS_GEO, get_logger
 log = get_logger(__name__)
 
 def clean_ipress(df: pd.DataFrame) -> gpd.GeoDataFrame:
-    """
-    Limpia IPRESS: estandariza nombres, maneja duplicados, filtra coordenadas
-    y prepara el objeto GeoDataFrame.
-    """
     df = df.copy()
     
     # 1. Standardize column names
@@ -55,9 +51,6 @@ def clean_ipress(df: pd.DataFrame) -> gpd.GeoDataFrame:
     return gdf
 
 def clean_emergencia(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Limpia emergencias: estandariza, maneja nulos y agrupa.
-    """
     df = df.copy()
     mapping = {
         'CO_IPRESS': 'codigo_renaes',
@@ -79,9 +72,6 @@ def clean_emergencia(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def clean_centros_poblados(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
-    """
-    Limpia CCPP: estandariza y asegura geometría.
-    """
     gdf = gdf.copy()
     mapping = {'NOM_POBLAD': 'nombre_cp'}
     gdf = gdf.rename(columns=mapping)
