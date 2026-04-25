@@ -1,13 +1,3 @@
-"""
-Streamlit app — Emergency Healthcare Access Inequality in Peru
-
-Tabs:
-  1. Data & Methodology
-  2. Static Analysis
-  3. GeoSpatial Results
-  4. Interactive Exploration
-"""
-
 import streamlit as st
 import pandas as pd
 import geopandas as gpd
@@ -17,7 +7,6 @@ from pathlib import Path
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
-# ── Paths ─────────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).parent
 PROCESSED = ROOT / "data" / "processed"
 FIGURES = ROOT / "output" / "figures"
@@ -29,7 +18,6 @@ st.set_page_config(
     layout="wide",
 )
 
-# ── Data loading (cached) ─────────────────────────────────────────────────────
 
 @st.cache_data
 def load_scores_table():
@@ -64,9 +52,6 @@ def show_image(name: str, caption: str = ""):
     else:
         st.warning(f"Figure not found: {name}. Run the pipeline first.")
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Tab layout
-# ─────────────────────────────────────────────────────────────────────────────
 
 tab1, tab2, tab3, tab4 = st.tabs([
     "📋 Data & Methodology",
@@ -75,9 +60,8 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "🔍 Interactive Exploration",
 ])
 
-# ══════════════════════════════════════════════════════════════════════════════
 # TAB 1 — Data & Methodology
-# ══════════════════════════════════════════════════════════════════════════════
+
 
 with tab1:
     st.title("Emergency Healthcare Access Inequality in Peru")
@@ -147,9 +131,8 @@ with tab1:
     - Population data from Centros Poblados may be outdated (last census-based).
     """)
 
-# ══════════════════════════════════════════════════════════════════════════════
+
 # TAB 2 — Static Analysis
-# ══════════════════════════════════════════════════════════════════════════════
 
 with tab2:
     st.title("Static Analysis")
@@ -201,9 +184,8 @@ with tab2:
     """)
     show_image("rank_shift_sensitivity.png", "Rank Shift: Baseline vs Alternative Specification")
 
-# ══════════════════════════════════════════════════════════════════════════════
+
 # TAB 3 — GeoSpatial Results
-# ══════════════════════════════════════════════════════════════════════════════
 
 with tab3:
     st.title("GeoSpatial Results")
@@ -243,14 +225,11 @@ with tab3:
     else:
         st.info("Run the pipeline to generate district scores.")
 
-# ══════════════════════════════════════════════════════════════════════════════
 # TAB 4 — Interactive Exploration
-# ══════════════════════════════════════════════════════════════════════════════
 
 with tab4:
     st.title("Interactive Exploration")
 
-    # ── Folium choropleth ─────────────────────────────────────────────────────
     st.subheader("Interactive Access Score Map")
     choropleth_path = FIGURES / "map_choropleth.html"
     if choropleth_path.exists():
@@ -273,7 +252,6 @@ with tab4:
     else:
         st.info("Run the pipeline to generate the facilities map.")
 
-    # ── Baseline vs Alternative comparison ───────────────────────────────────
     st.subheader("Baseline vs Alternative: District Comparison")
     df = load_scores_table()
     if not df.empty and "ehas_base" in df.columns and "ehas_alt" in df.columns:
