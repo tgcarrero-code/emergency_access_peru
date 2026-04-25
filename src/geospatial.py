@@ -21,10 +21,8 @@ try:
             df['ubigeo'] = df['ubigeo'].astype(str).str.strip().str.replace('.0', '', regex=False).str.zfill(6)
 
     if 'dist_nearest_km' not in gdf_cp_raw.columns:
-        print("📏 Calculando distancias al establecimiento más cercano (KDTree)...")
         gdf_cp_raw['dist_nearest_km'] = nearest_facility_distance(gdf_cp_raw, gdf_ipress_raw)
 
-    print("📊 Generando métricas por UBIGEO...")
     
     emerg_dist = df_emerg.groupby('ubigeo')['emergencias_total'].sum().reset_index()
     
@@ -37,7 +35,6 @@ try:
         lambda x: (x['dist_nearest_km'] > 30).mean() * 100, include_groups=False
     ).reset_index(name='pct_cp_over30km')
 
-    print("🔗 Uniendo tablas finales...")
     resumen_final = ipress_dist.merge(cp_dist, on='ubigeo', how='outer') \
                                .merge(emerg_dist, on='ubigeo', how='outer') \
                                .merge(cp_excl, on='ubigeo', how='outer')
